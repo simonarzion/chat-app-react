@@ -30,12 +30,12 @@ const ChatRoom = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       {messages &&
         messages.map((msg) => {
           return <Message key={msg.id} msg={msg} />;
         })}
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className="text-center py-5">
         <input
           type="text"
           value={text}

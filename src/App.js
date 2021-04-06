@@ -35,17 +35,17 @@ function App() {
   };
 
   return (
-    <>
-      <h1>Firebase / React Chat App</h1>
+    <div className="container-fluid bg-dark">
       {user ? (
         <div>
+          <h1 className="text-center text-light">Que pasa pa terrible chat</h1>
           <Logout logout={logout} />
           <ChatRoom />
         </div>
       ) : (
         <Signin login={login} />
       )}
-    </>
+    </div>
   );
 }
 
