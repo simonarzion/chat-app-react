@@ -35,6 +35,7 @@ function App() {
     auth.signOut();
   };
 
+  console.log("asd");
   return (
     <>
       <h1>Firebase / React Chat App</h1>
