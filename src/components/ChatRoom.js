@@ -12,7 +12,7 @@ const ChatRoom = () => {
   const { uid, photoURL, displayName } = auth.currentUser;
 
   const messageRef = firestore.collection("messages");
-  const query = messageRef.orderBy("createdAt").limit(20);
+  const query = messageRef.orderBy("createdAt").limit(100);
   const [messages] = useCollectionData(query, { idField: "id" });
 
   const submitHandler = (e) => {
