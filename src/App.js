@@ -21,7 +21,6 @@ function App() {
   }
 
   const auth = firebase.auth();
-  const firestore = firebase.firestore();
 
   const [user] = useAuthState(auth);
 
@@ -35,7 +34,6 @@ function App() {
     auth.signOut();
   };
 
-  console.log("asd");
   return (
     <>
       <h1>Firebase / React Chat App</h1>
