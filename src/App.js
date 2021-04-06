@@ -1,11 +1,12 @@
 import "./App.css";
-
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-import { useEffect, useState } from "react";
-import Logged from "./components/Logged";
+import ChatRoom from "./components/ChatRoom";
+import Signin from "./components/Signin";
 import Logout from "./components/Logout";
+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function App() {
   if (firebase.apps.length === 0) {
@@ -19,54 +20,31 @@ function App() {
     });
   }
 
-  const db = firebase.firestore();
-
   const auth = firebase.auth();
-  const [user, setUser] = useState(() => auth.currentUser);
+  const firestore = firebase.firestore();
 
-  useEffect(() => {
-    const unsuscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
+  const [user] = useAuthState(auth);
 
-    return unsuscribe;
-  });
-
-  const provider = new firebase.auth.GoogleAuthProvider();
-
-  const signIn = () => {
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((result) => {
-        console.log("logged in");
-        console.log(result.user);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  // SIGN IN
+  const login = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
   };
-
-  const logOut = () => {
-    try {
-      console.log("logged out");
-      firebase.auth().signOut();
-    } catch (e) {
-      console.log(e);
-    }
+  // LOG OUT
+  const logout = () => {
+    auth.signOut();
   };
 
   return (
     <>
       <h1>Firebase / React Chat App</h1>
       {user ? (
-        <Logged logOut={logOut} user={user} db={db} />
+        <div>
+          <Logout logout={logout} />
+          <ChatRoom />
+        </div>
       ) : (
-        <Logout signIn={signIn} />
+        <Signin login={login} />
       )}
     </>
   );

@@ -1,51 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import firebase from "firebase/app";
-import Messages from "./Messages";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import Message from "./Message";
 
-const ChatRoom = ({ user = null, db = null }) => {
-  const [messages, setMessages] = useState([]);
+const ChatRoom = () => {
   const [text, setText] = useState("");
 
-  useEffect(() => {
-    const unsuscribe = db
-      .collection("messages")
-      .orderBy("createdAt")
-      .limit(20)
-      .onSnapshot((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setMessages(data);
-      });
+  const firestore = firebase.firestore();
+  const auth = firebase.auth();
 
-    return unsuscribe;
-  }, [db]);
+  const { uid, photoURL, displayName } = auth.currentUser;
 
-  const handleSubmit = (e) => {
+  const messageRef = firestore.collection("messages");
+  const query = messageRef.orderBy("createdAt").limit(20);
+  const [messages] = useCollectionData(query, { idField: "id" });
+
+  const submitHandler = (e) => {
     e.preventDefault();
-    db.collection("messages").add({
+
+    messageRef.add({
       text: text,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      uid,
+      photoURL,
+      displayName,
     });
+
     setText("");
   };
 
-  const handleChange = (e) => {
-    setText(e.target.value);
-  };
-
   return (
-    <>
-      <h4>Chat</h4>
-      <Messages
-        messages={messages}
-        user={user}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        text={text}
-      />
-    </>
+    <div>
+      {messages &&
+        messages.map((msg) => {
+          return <Message key={msg.id} msg={msg} />;
+        })}
+      <form onSubmit={submitHandler}>
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
   );
 };
 

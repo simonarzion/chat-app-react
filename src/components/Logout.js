@@ -1,12 +1,10 @@
 import React from "react";
+import firebase from "firebase/app";
 
-const Logout = ({ signIn }) => {
-  return (
-    <div>
-      <h3>Welcome to the app</h3>
-      <button onClick={signIn}>Sign In</button>
-    </div>
-  );
+const Logout = ({ logout }) => {
+  const auth = firebase.auth();
+
+  return auth.currentUser && <button onClick={logout}>Log Out</button>;
 };
 
 export default Logout;
