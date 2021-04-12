@@ -6,8 +6,8 @@ const Logout = ({ logout }) => {
 
   return (
     auth.currentUser && (
-      <div className="text-right my-2">
-        <button onClick={logout} className="btn btn-outline-light btn-lg">
+      <div className="text-right logout mr-3">
+        <button onClick={logout} className="btn btn-outline-dark">
           Log Out
         </button>
       </div>

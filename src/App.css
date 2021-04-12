@@ -1,3 +1,37 @@
-body {
-  scroll-behavior: smooth;
+.chat {
+  max-width: 1200px;
+  width: 50%;
+  margin: auto;
+  overflow-y: auto;
+  height: 80vh;
+}
+
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+.logout {
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.login {
+  min-height: 100vh;
+}
+
+@media screen and (max-width: 1024px) {
+  .chat {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .chat {
+    width: 100%;
+  }
 }

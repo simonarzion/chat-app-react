@@ -4,9 +4,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import ChatRoom from "./components/ChatRoom";
 import Signin from "./components/Signin";
-import Logout from "./components/Logout";
-
 import { useAuthState } from "react-firebase-hooks/auth";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   if (firebase.apps.length === 0) {
@@ -34,19 +33,7 @@ function App() {
     auth.signOut();
   };
 
-  return (
-    <div className="container-fluid bg-dark">
-      {user ? (
-        <div>
-          <h1 className="text-center text-light">Que pasa pa terrible chat</h1>
-          <Logout logout={logout} />
-          <ChatRoom />
-        </div>
-      ) : (
-        <Signin login={login} />
-      )}
-    </div>
-  );
+  return <div className="">{user ? <ChatRoom logout={logout} /> : <Signin login={login} />}</div>;
 }
 
 export default App;
